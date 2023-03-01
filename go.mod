@@ -6,7 +6,7 @@ require (
 	github.com/authzed/grpcutil v0.0.0-20210913124023-cad23ae5a9e8
 	github.com/envoyproxy/protoc-gen-validate v0.6.7
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
-	github.com/jzelinskie/stringz v0.0.0-20210414224931-d6a8ce844a70
+	github.com/jzelinskie/stringz v0.0.1
 	github.com/planetscale/vtprotobuf v0.3.1-0.20220817155510-0ae748fd2007
 	github.com/stretchr/testify v1.8.0
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4
