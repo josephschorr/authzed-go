@@ -1975,6 +1975,35 @@ func (m *DownloadPermissionSetsResponse) validate(all bool) error {
 		}
 	}
 
+	if all {
+		switch v := interface{}(m.GetAtRevision()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, DownloadPermissionSetsResponseValidationError{
+					field:  "AtRevision",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, DownloadPermissionSetsResponseValidationError{
+					field:  "AtRevision",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetAtRevision()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return DownloadPermissionSetsResponseValidationError{
+				field:  "AtRevision",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
 	if len(errors) > 0 {
 		return DownloadPermissionSetsResponseMultiError(errors)
 	}

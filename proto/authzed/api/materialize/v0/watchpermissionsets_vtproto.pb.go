@@ -372,6 +372,13 @@ func (m *DownloadPermissionSetsResponse) CloneVT() *DownloadPermissionSetsRespon
 		}
 		r.Files = tmpContainer
 	}
+	if rhs := m.AtRevision; rhs != nil {
+		if vtpb, ok := interface{}(rhs).(interface{ CloneVT() *v1.ZedToken }); ok {
+			r.AtRevision = vtpb.CloneVT()
+		} else {
+			r.AtRevision = proto.Clone(rhs).(*v1.ZedToken)
+		}
+	}
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -900,6 +907,13 @@ func (this *DownloadPermissionSetsResponse) EqualVT(that *DownloadPermissionSets
 		}
 	}
 	if !(*timestamppb1.Timestamp)(this.Timestamp).EqualVT((*timestamppb1.Timestamp)(that.Timestamp)) {
+		return false
+	}
+	if equal, ok := interface{}(this.AtRevision).(interface{ EqualVT(*v1.ZedToken) bool }); ok {
+		if !equal.EqualVT(that.AtRevision) {
+			return false
+		}
+	} else if !proto.Equal(this.AtRevision, that.AtRevision) {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -1812,6 +1826,28 @@ func (m *DownloadPermissionSetsResponse) MarshalToSizedBufferVT(dAtA []byte) (in
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
+	if m.AtRevision != nil {
+		if vtmsg, ok := interface{}(m.AtRevision).(interface {
+			MarshalToSizedBufferVT([]byte) (int, error)
+		}); ok {
+			size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+		} else {
+			encoded, err := proto.Marshal(m.AtRevision)
+			if err != nil {
+				return 0, err
+			}
+			i -= len(encoded)
+			copy(dAtA[i:], encoded)
+			i = protohelpers.EncodeVarint(dAtA, i, uint64(len(encoded)))
+		}
+		i--
+		dAtA[i] = 0x1a
+	}
 	if m.Timestamp != nil {
 		size, err := (*timestamppb1.Timestamp)(m.Timestamp).MarshalToSizedBufferVT(dAtA[:i])
 		if err != nil {
@@ -2214,6 +2250,16 @@ func (m *DownloadPermissionSetsResponse) SizeVT() (n int) {
 	}
 	if m.Timestamp != nil {
 		l = (*timestamppb1.Timestamp)(m.Timestamp).SizeVT()
+		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.AtRevision != nil {
+		if size, ok := interface{}(m.AtRevision).(interface {
+			SizeVT() int
+		}); ok {
+			l = size.SizeVT()
+		} else {
+			l = proto.Size(m.AtRevision)
+		}
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
 	n += len(m.unknownFields)
@@ -4093,6 +4139,50 @@ func (m *DownloadPermissionSetsResponse) UnmarshalVT(dAtA []byte) error {
 			}
 			if err := (*timestamppb1.Timestamp)(m.Timestamp).UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
 				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AtRevision", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.AtRevision == nil {
+				m.AtRevision = &v1.ZedToken{}
+			}
+			if unmarshal, ok := interface{}(m.AtRevision).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.AtRevision); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		default:
